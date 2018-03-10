@@ -86,31 +86,30 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /**
+                                                                                                                                                                                                                                                                   * Created by heweiguang on 2018/3/10.
+                                                                                                                                                                                                                                                                   */
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Home = __webpack_require__(9);
+var _HomePage = __webpack_require__(9);
 
-var _Home2 = _interopRequireDefault(_Home);
+var _HomePage2 = _interopRequireDefault(_HomePage);
 
-var _UsersList = __webpack_require__(10);
+var _UsersListPage = __webpack_require__(10);
 
-var _UsersList2 = _interopRequireDefault(_UsersList);
+var _UsersListPage2 = _interopRequireDefault(_UsersListPage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = [{
+exports.default = [_extends({}, _HomePage2.default, {
     path: '/',
-    component: _Home2.default,
     exact: true
-}, {
-    loadData: _UsersList.loadData,
-    path: '/users',
-    component: _UsersList2.default
-}]; /**
-     * Created by heweiguang on 2018/3/10.
-     */
+}), _extends({}, _UsersListPage2.default, {
+    path: '/users'
+})];
 
 /***/ }),
 /* 3 */
@@ -298,7 +297,9 @@ var Home = function Home() {
     * Created by heweiguang on 2018/3/10.
     */
 
-exports.default = Home;
+exports.default = {
+    component: Home
+};
 
 /***/ }),
 /* 10 */
@@ -310,7 +311,6 @@ exports.default = Home;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.loadData = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -320,7 +320,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(3);
 
-var _actions = __webpack_require__(4);
+var _index = __webpack_require__(4);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -384,13 +384,15 @@ function mapStateToProps(state) {
 }
 
 function loadData(store) {
-    return store.dispatch((0, _actions.fetchUsers)());
+    return store.dispatch((0, _index.fetchUsers)());
 }
 
-exports.loadData = loadData;
-exports.default = (0, _reactRedux.connect)(mapStateToProps, {
-    fetchUsers: _actions.fetchUsers
-})(UsersList);
+exports.default = {
+    component: (0, _reactRedux.connect)(mapStateToProps, {
+        fetchUsers: _index.fetchUsers
+    })(UsersList),
+    loadData: loadData
+};
 
 /***/ }),
 /* 11 */
@@ -421,15 +423,15 @@ var _reactRedux = __webpack_require__(3);
 
 var _reactRouterConfig = __webpack_require__(1);
 
+var _serializeJavascript = __webpack_require__(19);
+
+var _serializeJavascript2 = _interopRequireDefault(_serializeJavascript);
+
 var _Routes = __webpack_require__(2);
 
 var _Routes2 = _interopRequireDefault(_Routes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * Created by heweiguang on 2018/3/10.
- */
 
 exports.default = function (req, store) {
     var content = (0, _server.renderToString)(_react2.default.createElement(
@@ -446,10 +448,12 @@ exports.default = function (req, store) {
         )
     ));
 
-    var html = '\n        <html>\n            <head></head>\n            <body>\n                <div id="root">' + content + '</div>\n                <script src="bundle.js"></script>\n            </body>        \n        </html>\n    ';
+    var html = '\n        <html>\n            <head></head>\n            <body>\n                <div id="root">' + content + '</div>\n                <script>\n                    window.INITIAL_STATE = ' + (0, _serializeJavascript2.default)(store.getState()) + '\n                </script>\n                <script src="bundle.js"></script>\n            </body>        \n        </html>\n    ';
 
     return html;
-};
+}; /**
+    * Created by heweiguang on 2018/3/10.
+    */
 
 /***/ }),
 /* 13 */
@@ -553,6 +557,12 @@ exports.default = function () {
 }; /**
     * Created by heweiguang on 2018/3/10.
     */
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+module.exports = require("serialize-javascript");
 
 /***/ })
 /******/ ]);

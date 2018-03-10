@@ -13,7 +13,7 @@ import { renderRoutes } from 'react-router-config';
 import Routes from './Routes';
 import reducers from './reducers';
 
-const store = createStore(reducers, {}, applyMiddleware(thunk));
+const store = createStore(reducers, window.INITIAL_STATE, applyMiddleware(thunk));
 
 // React 将在 v17 不再支持用 render 进行服务端渲染，所以用 hydrate
 ReactDOM.hydrate(
