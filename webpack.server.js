@@ -3,8 +3,11 @@
  */
 
 const path = require('path');
+const merge = require('webpack-merge');
+const baseConfig = require('./webpack.base');
+const webpackNodeExternals = require('webpack-node-externals');// 能够使 node_modules 下的包不会一起打包进 bundle.js 而只是用 require 调用
 
-module.exports = {
+const config = {
     // 告诉 webpack 这是用于 node 环境 （区别于 浏览器 环境）
     target: 'node',
     entry: './src/index.js',
@@ -12,24 +15,8 @@ module.exports = {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'build')
     },
-    module: {
-        rules: [
-            {
-                test: /\.js?$/,
-                loader: 'babel-loader',
-                exclude: /node_modules/,
-                options: {
-                    presets: [
-                        'react',
-                        'stage-0',
-                        ['env', {
-                            target: {
-                                browsers: ['last 2 versions']
-                            }
-                        }]
-                    ]
-                }
-            }
-        ]
-    }
+
+    externals: [webpackNodeExternals()]
 };
+
+module.exports = merge(baseConfig, config);
