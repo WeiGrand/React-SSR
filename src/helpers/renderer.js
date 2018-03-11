@@ -7,7 +7,7 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { renderRoutes } from 'react-router-config';
-import serialize from 'serialize-javascript';
+import serialize from 'serialize-javascript'; //防止XXS
 import Routes from '../client/Routes';
 
 export default (req, store) => {
@@ -23,7 +23,9 @@ export default (req, store) => {
 
     const html = `
         <html>
-            <head></head>
+            <head>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+            </head>
             <body>
                 <div id="root">${content}</div>
                 <script>
