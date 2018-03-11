@@ -38,11 +38,21 @@ app.get('*', (req, res) => {
         } = route;
 
         return loadData ? loadData(store) : null;
+    }).map(promise => {
+        if(promise) {
+            return new Promise((resolve, reject) => {
+                promise.then(resolve).catch(resolve);
+            })
+        }
     });
 
     Promise.all(promises).then(() => {
         const context = {};
         const content = renderer(req, store, context);
+
+        if(context.url) {
+            return res.redirect(301, context.url);
+        }
 
         if(context.notFound) {
             res.status(404);
