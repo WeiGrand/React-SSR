@@ -40,7 +40,7 @@ app.get('*', (req, res) => {
         return loadData ? loadData(store) : null;
     }).map(promise => {
         if(promise) {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 promise.then(resolve).catch(resolve);
             })
         }

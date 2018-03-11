@@ -8,6 +8,7 @@ import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { renderRoutes } from 'react-router-config';
 import serialize from 'serialize-javascript'; //防止XXS
+import { Helmet } from 'react-helmet';
 import Routes from '../client/Routes';
 
 export default (req, store, context) => {
@@ -21,9 +22,13 @@ export default (req, store, context) => {
         </Provider>
     );
 
+    const helmet = Helmet.renderStatic();
+
     const html = `
         <html>
             <head>
+                ${helmet.title.toString()}
+                ${helmet.meta.toString()}
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
             </head>
             <body>
